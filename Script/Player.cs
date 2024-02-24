@@ -8,12 +8,14 @@ public partial class Player : CharacterBody2D
 
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-    public AnimatedSprite2D anim;
+    public AnimationPlayer anim;
+	public AnimatedSprite2D sprite;
 
 
     public override void _Ready()
     {
-		anim = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		anim = GetNode<AnimationPlayer>("AnimationPlayer");
+		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		anim.Play("Idle");
         base._Ready();
     }
@@ -37,11 +39,11 @@ public partial class Player : CharacterBody2D
 		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if(direction.X < 0)
 		{
-			anim.FlipH = true;
+			sprite.FlipH = true;
 		}
 		else if(direction.X > 0)
 		{
-			anim.FlipH = false;
+			sprite.FlipH = false;
 		}
 		
 		if (direction != Vector2.Zero)
