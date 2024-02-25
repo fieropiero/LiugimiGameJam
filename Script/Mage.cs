@@ -4,7 +4,8 @@ using System;
 public partial class Mage : Area2D
 {
 	AnimationPlayer anim;
-	public short hp = 5;
+	[Export]
+	public short hp = 10;
 	public Vector2 speedVec = new(0, 5);
 	public float direction = 1;
 	// Called when the node enters the scene tree for the first time.
