@@ -23,7 +23,7 @@ public partial class Firebomb : Area2D
 	public void _on_body_entered(Node2D body){
 		if (body.Name == "Player"){
 			anim.Play("Explosion");
-			body.QueueFree();
+			((Player) body).die();
 		}
 	}
 }

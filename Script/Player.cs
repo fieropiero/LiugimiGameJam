@@ -123,4 +123,10 @@ public partial class Player : CharacterBody2D
 			area.QueueFree();
 		}
 	}
+
+	public void die()
+	{
+		this.QueueFree();
+		GetTree().ReloadCurrentScene();
+	}
 }
