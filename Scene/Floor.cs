@@ -10,7 +10,7 @@ public partial class Floor : StaticBody2D
 	[Export] private PackedScene _platform;
 	Random rnd = new Random();
 
-	List<int> h_platforms = new List<int>(){-20, -140, -240, -340, -440};
+	List<int> h_platforms = new List<int>(){-20, -200, -400};
 	int PLATFORMS_SPAWN_POINT_X = 750;
 
 	int spawnPlatformEveryTheseFrames = 60;
