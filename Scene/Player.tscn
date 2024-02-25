@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://c1eeafou2ayyf"]
+[gd_scene load_steps=20 format=3 uid="uid://c1eeafou2ayyf"]
 
 [ext_resource type="Script" path="res://Script/Player.cs" id="1_2ukl8"]
 [ext_resource type="Texture2D" uid="uid://dhras1pelmt61" path="res://Cheri/Saltino1.png" id="3_kjcss"]
@@ -223,6 +223,10 @@ _data = {
 "Run": SubResource("Animation_ixwuq")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e6dc5"]
+radius = 33.0
+height = 136.0
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_2ukl8")
 _HatScene = ExtResource("25_gwojm")
@@ -245,3 +249,10 @@ libraries = {
 
 [node name="HatSpawnPoint" type="Marker2D" parent="."]
 position = Vector2(29, 0)
+
+[node name="HatRetriever" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HatRetriever"]
+shape = SubResource("CapsuleShape2D_e6dc5")
+
+[connection signal="area_entered" from="HatRetriever" to="." method="_on_hat_retriever_area_entered"]
