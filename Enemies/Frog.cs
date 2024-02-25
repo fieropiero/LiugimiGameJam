@@ -29,13 +29,13 @@ public partial class Frog : CharacterBody2D
 
 		if (chase == true){
 			Vector2 direction = player.Position - this.Position;
-			GD.Print(direction);
+			//GD.Print(direction);
 			if (direction.X > 0){
-				GD.Print("chase right");
+				//GD.Print("chase right");
 				velocity.X = Speed;
 				enemyAnimatedSprite.FlipH = true;
 			} else {
-				GD.Print("left");
+				//GD.Print("left");
 				velocity.X = -Speed;
 				enemyAnimatedSprite.FlipH = false;	
 			}
