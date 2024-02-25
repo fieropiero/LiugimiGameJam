@@ -7,10 +7,10 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6c7fc"]
 resource_local_to_scene = true
-size = Vector2(50, 48)
+size = Vector2(97, 80)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d1di6"]
-radius = 192.065
+radius = 317.077
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8fuwk"]
 atlas = ExtResource("1_so7hn")

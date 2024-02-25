@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading;
 
 public partial class Player : CharacterBody2D
 {
@@ -15,6 +16,7 @@ public partial class Player : CharacterBody2D
 	[Export]
 	public PackedScene _HatScene;
 	public bool hasHat = true;
+	public bool dead = false;
 
 
 	public override void _Ready()
@@ -53,6 +55,8 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+
+
 		Vector2 velocity = Velocity;
 
 		// Add the gravity.
@@ -167,7 +171,6 @@ public partial class Player : CharacterBody2D
 
 	public async void die()
 	{
-		this.QueueFree();
 		if(hasHat)
 		{
 			anim.Play("Death");
