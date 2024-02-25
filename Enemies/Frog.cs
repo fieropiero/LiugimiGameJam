@@ -3,6 +3,8 @@ using System;
 
 public partial class Frog : CharacterBody2D
 {
+	
+	public AnimationPlayer anim;
 	public const float Speed = 80.0f;
 	public const float JumpVelocity = -400.0f;
 
@@ -14,13 +16,14 @@ public partial class Frog : CharacterBody2D
 
 	public override void _Ready()
 	{
-		
+		anim = GetNode<AnimationPlayer>("AnimationPlayer");
+		anim.Play("Idle");
 	}
 
+	CharacterBody2D player = null;
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 velocity = Velocity;
-		CharacterBody2D player = GetNode<CharacterBody2D>("../Player");
 		AnimatedSprite2D enemyAnimatedSprite = GetNode<AnimatedSprite2D>("../Frog/AnimatedSprite2D");
 
 		// Add the gravity.
@@ -29,7 +32,7 @@ public partial class Frog : CharacterBody2D
 
 		if (chase == true){
 			Vector2 direction = player.Position - this.Position;
-			//GD.Print(direction);
+			anim.Play("Run");
 			if (direction.X > 0){
 				//GD.Print("chase right");
 				velocity.X = Speed;
@@ -42,6 +45,7 @@ public partial class Frog : CharacterBody2D
 		}
 		if (chase == false){
 			velocity.X = 0;
+			anim.Play("Idle");
 		}
 
 		Velocity = velocity;
@@ -51,6 +55,7 @@ public partial class Frog : CharacterBody2D
 	public void _on_player_detection_body_entered(Node2D body){
 		
 		if (body.Name == "Player"){
+			player = (CharacterBody2D)body;
 			chase = true;
 		}
 	}
@@ -59,5 +64,13 @@ public partial class Frog : CharacterBody2D
 		if (body.Name == "Player"){
 			chase = false;
 		}
+	}
+
+	public void _on_area_2d_body_entered(Node2D body)
+	{
+		if (body.Name == "Player"){
+			body.QueueFree();
+		}
+
 	}
 }
