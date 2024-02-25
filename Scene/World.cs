@@ -15,7 +15,7 @@ public partial class World : Node
 	int PLATFORMS_SPAWN_POINT_X = 1300;
 
 	int FROG_SPAWN_POINT_DELTA_X = -70;
-	int FROG_SPAWN_POINT_DELTA_Y = -10;
+	int FROG_SPAWN_POINT_DELTA_Y = -40;
 
 	int spawnObjectEveryTheseFrames = 120;
 
