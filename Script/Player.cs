@@ -117,6 +117,11 @@ public partial class Player : CharacterBody2D
 	}
 	public void _on_hat_retriever_area_entered(Area2D area)
 	{
+		if(area.IsInGroup("Limit"))
+		{
+			die();
+		}
+
 		if(area.IsInGroup("Hat") && ((Hat)area).boomerang)
 		{
 			hasHat = true;
