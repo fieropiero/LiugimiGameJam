@@ -127,5 +127,6 @@ public partial class Player : CharacterBody2D
 	public void die()
 	{
 		this.QueueFree();
+		GetTree().ReloadCurrentScene();
 	}
 }
