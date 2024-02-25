@@ -8,7 +8,8 @@ public partial class Player : CharacterBody2D
 
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-	public Node bullet;
+
+	public Marker2D hatSpawnPoint;
     public AnimationPlayer anim;
 	public AnimatedSprite2D sprite;
 	[Export]
@@ -17,10 +18,12 @@ public partial class Player : CharacterBody2D
 
     public override void _Ready()
     {
+		hatSpawnPoint = GetNode<Marker2D>("HatSpawnPoint");
 		anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		anim.Play("Idle");
         base._Ready();
+		GD.Print(Position);
     }
 
     public override void _Input(InputEvent @event)
@@ -32,6 +35,13 @@ public partial class Player : CharacterBody2D
 			_spawnHat();
 		}
     }
+
+	private void FlipHatSpawnPoint(bool toRight)
+	{
+		if((toRight && hatSpawnPoint.Position.X < 0)
+		||(!toRight && hatSpawnPoint.Position.X > 0))
+			hatSpawnPoint.Position *= Transform2D.FlipX;
+	}
 
     public override void _PhysicsProcess(double delta)
 	{
@@ -53,10 +63,12 @@ public partial class Player : CharacterBody2D
 		if(direction.X < 0)
 		{
 			sprite.FlipH = true;
+			FlipHatSpawnPoint(false);
 		}
 		else if(direction.X > 0)
 		{
 			sprite.FlipH = false;
+			FlipHatSpawnPoint(true);
 		}
 		
 		if (direction != Vector2.Zero)
@@ -90,24 +102,13 @@ public partial class Player : CharacterBody2D
 		MoveAndSlide();
 	}
 
-	private Vector2 HatSpawnOffSet = new(100,-100); 
-	private Vector2 SpawnPosition;
 	private Vector2 SpawnVelocity = new(20,0);
 	
-	public void _spawnHat(){
+	public void _spawnHat()
+	{
 		Hat hat = _HatScene.Instantiate<Hat>();
-		HatSpawnOffSet.X = 100;
-		SpawnVelocity.X = 20;
-		var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		if(sprite.FlipH){
-			HatSpawnOffSet.X = -100;
-			GD.Print("chase right");
-			SpawnVelocity.X = -20;
-		}
-		SpawnPosition = Position + HatSpawnOffSet;
-		hat.Position = SpawnPosition;
-		hat.velocity = SpawnVelocity;
-		
-		GetNode("../HatSpawnPoint").AddChild(hat);
+		hat.Position = hatSpawnPoint.GlobalPosition;
+		if(sprite.FlipH) hat.direction = -1;
+		Owner.AddChild(hat);
 	}
 }
