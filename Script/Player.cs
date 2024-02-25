@@ -169,7 +169,7 @@ public partial class Player : CharacterBody2D
 		}
 	}
 
-	public async void die()
+	public void die()
 	{
 		if(hasHat)
 		{
