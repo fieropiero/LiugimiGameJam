@@ -41,4 +41,10 @@ public partial class Mage : Area2D
 		}
 	}
 
+	public void _on_body_entered(Node2D body){
+		if (body.Name == "Player"){
+			((Player) body).die();
+		}
+	}
+
 }
