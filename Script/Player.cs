@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading;
 
 public partial class Player : CharacterBody2D
 {
@@ -15,6 +16,7 @@ public partial class Player : CharacterBody2D
 	[Export]
 	public PackedScene _HatScene;
 	public bool hasHat = true;
+	public bool dead = false;
 
 
 	public override void _Ready()
@@ -22,7 +24,14 @@ public partial class Player : CharacterBody2D
 		hatSpawnPoint = GetNode<Marker2D>("HatSpawnPoint");
 		anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		anim.Play("Idle");
+		if(hasHat)
+		{
+			anim.Play("Idle");
+		}
+		else
+		{
+			anim.Play("Idle_bald");
+		}
 		base._Ready();
 		GD.Print(Position);
 	}
@@ -30,6 +39,7 @@ public partial class Player : CharacterBody2D
 	public override void _Input(InputEvent @event)
 	{
 		base._Input(@event);
+		anim.Play("Attack");
 		if(Input.IsPhysicalKeyPressed(Key.X))
 		{
 			_spawnHat();
@@ -45,6 +55,8 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+
+
 		Vector2 velocity = Velocity;
 
 		// Add the gravity.
@@ -76,7 +88,14 @@ public partial class Player : CharacterBody2D
 			velocity.X = direction.X * Speed;
 			if(velocity.Y == 0)
 			{
-				anim.Play("Run");
+				if(hasHat)
+				{
+					anim.Play("Run");
+				}
+				else
+				{
+					anim.Play("Run_bald");
+				}
 			}
 		}
 		else
@@ -85,17 +104,38 @@ public partial class Player : CharacterBody2D
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 			if(velocity.Y == 0)
 			{
-				anim.Play("Idle");
+				if(hasHat)
+				{
+					anim.Play("Idle");
+				}
+				else
+				{
+					anim.Play("Idle_bald");
+				}
 			}
 		}
 
 		if(velocity.Y < 0)
 		{
-			anim.Play("Jump");
+			if(hasHat)
+			{
+				anim.Play("Jump");
+			}
+			else
+			{
+				anim.Play("Jump_bald");
+			}
 		}
 		if(velocity.Y > 0)
 		{
-			anim.Play("Fall");
+			if(hasHat)
+			{
+				anim.Play("Fall");
+			}
+			else
+			{
+				anim.Play("Fall_bald");
+			}
 		}
 
 		Velocity = velocity;
@@ -117,10 +157,30 @@ public partial class Player : CharacterBody2D
 	}
 	public void _on_hat_retriever_area_entered(Area2D area)
 	{
+		if(area.IsInGroup("Limit"))
+		{
+			die();
+		}
+
 		if(area.IsInGroup("Hat") && ((Hat)area).boomerang)
 		{
 			hasHat = true;
 			area.QueueFree();
 		}
 	}
+
+	public void die()
+	{
+		if(hasHat)
+		{
+			anim.Play("Death");
+		}
+		else
+		{
+			anim.Play("Death_bald");
+		}
+		dead = true;
+		GetTree().ReloadCurrentScene();
+	}
+	
 }

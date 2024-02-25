@@ -11,13 +11,13 @@ public partial class World : Node
 	private int framesPassed = 0;	
 	Random rnd = new Random();
 
-	List<int> h_platforms = new List<int>(){200, 400, 600};
+	List<int> h_platforms = new List<int>(){190, 400, 600};
 	int PLATFORMS_SPAWN_POINT_X = 1300;
 
 	int FROG_SPAWN_POINT_DELTA_X = -70;
-	int FROG_SPAWN_POINT_DELTA_Y = -40;
+	int FROG_SPAWN_POINT_DELTA_Y = -100;
 
-	int spawnObjectEveryTheseFrames = 120;
+	int spawnObjectEveryTheseFrames = 60;
 
 	int SPAWN_FROGS_EVERE_THESE_FRAMES;
 

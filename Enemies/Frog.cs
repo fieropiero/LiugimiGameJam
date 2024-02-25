@@ -70,7 +70,7 @@ public partial class Frog : CharacterBody2D
 	public void _on_area_2d_body_entered(Node2D body)
 	{
 		if (body.Name == "Player"){
-			body.QueueFree();
+			((Player) body).die();
 		}
 
 	}

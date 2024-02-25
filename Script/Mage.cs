@@ -4,9 +4,11 @@ using System;
 public partial class Mage : Area2D
 {
 	AnimationPlayer anim;
-	public short hp = 5;
+	[Export]
+	public short hp = 10;
 	public Vector2 speedVec = new(0, 5);
 	public float direction = 1;
+	TimeSpan hitTime = DateTime.Now.AddSeconds(1).TimeOfDay;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -33,11 +35,24 @@ public partial class Mage : Area2D
 		else if(area.IsInGroup("Hat"))
 		{
 			hp--;
+			anim.Play("Hit");
 		}
 		if(hp <= 0)
 		{
 			this.QueueFree();
 		}
+	}
+
+	public void _on_body_entered(Node2D body){
+		if (body.Name == "Player"){
+			((Player) body).die();
+		}
+	}
+
+	public void _on_animation_player_animation_finished(string anim_name)
+	{
+		if(anim_name == "Hit")
+			anim.Play("Idle");
 	}
 
 }
