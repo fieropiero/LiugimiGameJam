@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Firebomb : Node2D
+public partial class Firebomb : Area2D
 {
 	Random rnd = new Random();
 	int velocity = 0;
