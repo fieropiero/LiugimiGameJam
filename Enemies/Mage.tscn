@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bham0elhd17ym"]
+[gd_scene load_steps=12 format=3 uid="uid://bham0elhd17ym"]
 
 [ext_resource type="Script" path="res://Script/Mage.cs" id="1_bpwme"]
 [ext_resource type="Texture2D" uid="uid://d21ax8hsnkak" path="res://Graphical Assets/gothicvania church files/SPRITES/wizard/idle-sprites/wizard-idle-1.png" id="1_x5na3"]
@@ -33,6 +33,55 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_grryc"]
+resource_name = "Idle"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Idle"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_jr48h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pjfj1"]
+_data = {
+"Idle": SubResource("Animation_grryc"),
+"RESET": SubResource("Animation_jr48h")
+}
+
 [node name="Mage" type="Area2D" groups=["Boss"]]
 script = ExtResource("1_bpwme")
 
@@ -44,9 +93,11 @@ shape = SubResource("RectangleShape2D_taul4")
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_j7lr4")
 animation = &"Idle"
-frame = 4
-frame_progress = 0.0483448
+frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pjfj1")
+}
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -3,12 +3,15 @@ using System;
 
 public partial class Mage : Area2D
 {
+	AnimationPlayer anim;
 	public short hp = 500;
 	public Vector2 speedVec = new(0, 5);
 	public float direction = 1;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		anim = GetNode<AnimationPlayer>("AnimationPlayer");
+		anim.Play("Idle");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
