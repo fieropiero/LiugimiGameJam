@@ -5,13 +5,11 @@
 [ext_resource type="Script" path="res://Scene/Floor.cs" id="3_is4sd"]
 [ext_resource type="PackedScene" uid="uid://0gaocrgng25j" path="res://Scene/Platform.tscn" id="4_1iwfk"]
 
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_paylv"]
 size = Vector2(1036, 44)
 
 [node name="World" type="Node"]
-
-[node name="Frog" parent="." instance=ExtResource("2_1iedd")]
-position = Vector2(322, 441)
 
 [node name="Player" parent="." instance=ExtResource("1_kaui3")]
 position = Vector2(585, 434)

@@ -8,17 +8,39 @@ public partial class Player : CharacterBody2D
 
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+
+	public Marker2D hatSpawnPoint;
     public AnimationPlayer anim;
 	public AnimatedSprite2D sprite;
+	[Export]
+	public PackedScene _HatScene;
 
 
     public override void _Ready()
     {
+		hatSpawnPoint = GetNode<Marker2D>("HatSpawnPoint");
 		anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		anim.Play("Idle");
         base._Ready();
+		GD.Print(Position);
     }
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+		if(Input.IsPhysicalKeyPressed(Key.X))
+		{
+			_spawnHat();
+		}
+    }
+
+	private void FlipHatSpawnPoint(bool toRight)
+	{
+		if((toRight && hatSpawnPoint.Position.X < 0)
+		||(!toRight && hatSpawnPoint.Position.X > 0))
+			hatSpawnPoint.Position *= Transform2D.FlipX;
+	}
 
     public override void _PhysicsProcess(double delta)
 	{
@@ -40,10 +62,12 @@ public partial class Player : CharacterBody2D
 		if(direction.X < 0)
 		{
 			sprite.FlipH = true;
+			FlipHatSpawnPoint(false);
 		}
 		else if(direction.X > 0)
 		{
 			sprite.FlipH = false;
+			FlipHatSpawnPoint(true);
 		}
 		
 		if (direction != Vector2.Zero)
@@ -75,5 +99,15 @@ public partial class Player : CharacterBody2D
 
 		Velocity = velocity;
 		MoveAndSlide();
+	}
+
+	private Vector2 SpawnVelocity = new(20,0);
+	
+	public void _spawnHat()
+	{
+		Hat hat = _HatScene.Instantiate<Hat>();
+		hat.Position = hatSpawnPoint.GlobalPosition;
+		if(sprite.FlipH) hat.direction = -1;
+		Owner.AddChild(hat);
 	}
 }
