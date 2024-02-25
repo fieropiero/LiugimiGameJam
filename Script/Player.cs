@@ -179,6 +179,8 @@ public partial class Player : CharacterBody2D
 		{
 			anim.Play("Death_bald");
 		}
+		dead = true;
 		GetTree().ReloadCurrentScene();
 	}
+	
 }
