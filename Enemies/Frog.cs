@@ -47,6 +47,7 @@ public partial class Frog : CharacterBody2D
 			velocity.X = 0;
 			anim.Play("Idle");
 		}
+		Position += new Vector2(-2, 0);
 
 		Velocity = velocity;
 		MoveAndSlide();

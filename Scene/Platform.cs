@@ -11,6 +11,6 @@ public partial class Platform : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		Position += new Vector2(-1, 0);
+		Position += new Vector2(-2, 0);
 	}
 }
