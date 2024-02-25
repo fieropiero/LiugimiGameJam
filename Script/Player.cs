@@ -10,30 +10,31 @@ public partial class Player : CharacterBody2D
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
 	public Marker2D hatSpawnPoint;
-    public AnimationPlayer anim;
+	public AnimationPlayer anim;
 	public AnimatedSprite2D sprite;
 	[Export]
 	public PackedScene _HatScene;
+	public bool hasHat = true;
 
 
-    public override void _Ready()
-    {
+	public override void _Ready()
+	{
 		hatSpawnPoint = GetNode<Marker2D>("HatSpawnPoint");
 		anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		anim.Play("Idle");
-        base._Ready();
+		base._Ready();
 		GD.Print(Position);
-    }
+	}
 
-    public override void _Input(InputEvent @event)
-    {
-        base._Input(@event);
+	public override void _Input(InputEvent @event)
+	{
+		base._Input(@event);
 		if(Input.IsPhysicalKeyPressed(Key.X))
 		{
 			_spawnHat();
 		}
-    }
+	}
 
 	private void FlipHatSpawnPoint(bool toRight)
 	{
@@ -42,7 +43,7 @@ public partial class Player : CharacterBody2D
 			hatSpawnPoint.Position *= Transform2D.FlipX;
 	}
 
-    public override void _PhysicsProcess(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 velocity = Velocity;
 
@@ -105,9 +106,21 @@ public partial class Player : CharacterBody2D
 	
 	public void _spawnHat()
 	{
+		if(!hasHat) return;
+
 		Hat hat = _HatScene.Instantiate<Hat>();
 		hat.Position = hatSpawnPoint.GlobalPosition;
-		if(sprite.FlipH) hat.direction = -1;
+		hat.target = this;
+		if(sprite.FlipH) hat.xdirection = -1;
 		Owner.AddChild(hat);
+		hasHat = false;
+	}
+	public void _on_hat_retriever_area_entered(Area2D area)
+	{
+		if(area.IsInGroup("Hat") && ((Hat)area).boomerang)
+		{
+			hasHat = true;
+			area.QueueFree();
+		}
 	}
 }
