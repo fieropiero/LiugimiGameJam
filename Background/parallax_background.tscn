@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://xcj82lhmvkbe"]
+
+[ext_resource type="Texture2D" uid="uid://cwyspe0yyjlrs" path="res://Graphical Assets/gothicvania church/assets/environment/background.png" id="1_hucpj"]
+[ext_resource type="Script" path="res://Background/parallax_background.gd" id="1_ioq2q"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+script = ExtResource("1_ioq2q")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+top_level = true
+
+[node name="Background" type="Sprite2D" parent="ParallaxLayer"]
+position = Vector2(1809, 335.5)
+scale = Vector2(3.35065, 3.00446)
+texture = ExtResource("1_hucpj")
