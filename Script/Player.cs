@@ -8,8 +8,11 @@ public partial class Player : CharacterBody2D
 
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+	public Node bullet;
     public AnimationPlayer anim;
 	public AnimatedSprite2D sprite;
+	[Export]
+	public PackedScene _HatScene;
 
 
     public override void _Ready()
@@ -18,6 +21,16 @@ public partial class Player : CharacterBody2D
 		sprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		anim.Play("Idle");
         base._Ready();
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+		if(Input.IsPhysicalKeyPressed(Key.X))
+		{
+			GD.Print("chase right");
+			_spawnHat();
+		}
     }
 
     public override void _PhysicsProcess(double delta)
@@ -75,5 +88,26 @@ public partial class Player : CharacterBody2D
 
 		Velocity = velocity;
 		MoveAndSlide();
+	}
+
+	private Vector2 HatSpawnOffSet = new(100,-100); 
+	private Vector2 SpawnPosition;
+	private Vector2 SpawnVelocity = new(20,0);
+	
+	public void _spawnHat(){
+		Hat hat = _HatScene.Instantiate<Hat>();
+		HatSpawnOffSet.X = 100;
+		SpawnVelocity.X = 20;
+		var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+		if(sprite.FlipH){
+			HatSpawnOffSet.X = -100;
+			GD.Print("chase right");
+			SpawnVelocity.X = -20;
+		}
+		SpawnPosition = Position + HatSpawnOffSet;
+		hat.Position = SpawnPosition;
+		hat.velocity = SpawnVelocity;
+		
+		GetNode("../HatSpawnPoint").AddChild(hat);
 	}
 }
