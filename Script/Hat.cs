@@ -37,14 +37,15 @@ public partial class Hat : Area2D
 	{
     startingPosition = new(Position.X, Position.Y);
     speedVec = new(speed, 0);
+  }
 
-	private void _on_area_entered(Area2D area)
+	public void _on_area_entered(Area2D area)
 	{
 		if(area.IsInGroup("Enemy"))
 			area.QueueFree();
 	}
 
-	private void _on_body_entered(Node2D body)
+	public void _on_body_entered(Node2D body)
 	{
 		if(body.IsInGroup("Enemy"))
 			body.QueueFree();
