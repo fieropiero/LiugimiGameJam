@@ -31,7 +31,6 @@ public partial class Player : CharacterBody2D
         base._Input(@event);
 		if(Input.IsPhysicalKeyPressed(Key.X))
 		{
-			GD.Print("chase right");
 			_spawnHat();
 		}
     }
