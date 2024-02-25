@@ -42,7 +42,9 @@ public partial class Frog : CharacterBody2D
 		}
 		if (chase == false){
 			velocity.X = 0;
+			//same position of the platform
 		}
+		Position += new Vector2(-2, 0);
 
 		Velocity = velocity;
 		MoveAndSlide();
