@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://de2ujcft66hot"]
+[gd_scene load_steps=16 format=3 uid="uid://de2ujcft66hot"]
 
 [ext_resource type="Script" path="res://Enemies/Firebomb.cs" id="1_puojv"]
 [ext_resource type="Texture2D" uid="uid://csd1a4yu6l7hg" path="res://Graphical Assets/Magic Pack 9 files/spritesheets/Fire-bomb.png" id="1_xkmy8"]
@@ -377,10 +377,110 @@ sources/0 = SubResource("TileSetAtlasSource_1his8")
 radius = 20.0
 height = 44.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tsr6x"]
+atlas = ExtResource("1_xkmy8")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwp83"]
+atlas = ExtResource("1_xkmy8")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgkiy"]
+atlas = ExtResource("1_xkmy8")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fmatr"]
+atlas = ExtResource("1_xkmy8")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wu5q0"]
+atlas = ExtResource("1_xkmy8")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m411a"]
+atlas = ExtResource("1_xkmy8")
+region = Rect2(472, 0, 59, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_31lkr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tsr6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwp83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgkiy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fmatr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wu5q0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m411a")
+}],
+"loop": true,
+"name": &"Explosion",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_fha00"]
+resource_name = "Explosion"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Explosion"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_kd401"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_18bhl"]
+_data = {
+"Explosion": SubResource("Animation_fha00"),
+"RESET": SubResource("Animation_kd401")
+}
+
 [node name="Firebomb" type="Area2D"]
 script = ExtResource("1_puojv")
 
 [node name="TileMap" type="TileMap" parent="."]
+visible = false
 tile_set = SubResource("TileSet_gw7o1")
 format = 2
 layer_0/tile_data = PackedInt32Array(131071, 2621440, 1610612737, 65535, 2686976, 1610612737, -1, 2752512, 1610612737, -65537, 2818048, 1610612737, 65536, 2621440, 1610612738, 0, 2686976, 1610612738, -65536, 2752512, 1610612738, -131072, 2818048, 1610612738, 65537, 2621440, 1610612739, 1, 2686976, 1610612739, -65535, 2752512, 1610612739, -131071, 2818048, 1610612739)
@@ -388,3 +488,18 @@ layer_0/tile_data = PackedInt32Array(131071, 2621440, 1610612737, 65535, 2686976
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(6, 0)
 shape = SubResource("CapsuleShape2D_iwdai")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(6, 1)
+rotation = -1.5708
+sprite_frames = SubResource("SpriteFrames_31lkr")
+animation = &"Explosion"
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite2D")
+libraries = {
+"": SubResource("AnimationLibrary_18bhl")
+}
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
