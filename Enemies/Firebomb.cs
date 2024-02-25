@@ -21,7 +21,9 @@ public partial class Firebomb : Node2D
 	}
 
 	public void _on_body_entered(Node2D body){
-		anim.Play("Explosion");
-		body.QueueFree();
+		if (body.Name == "Player"){
+			anim.Play("Explosion");
+			body.QueueFree();
+		}
 	}
 }
