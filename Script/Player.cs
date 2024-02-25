@@ -14,6 +14,7 @@ public partial class Player : CharacterBody2D
 	public AnimatedSprite2D sprite;
 	[Export]
 	public PackedScene _HatScene;
+	public bool hasHat = true;
 
 
     public override void _Ready()
@@ -105,9 +106,21 @@ public partial class Player : CharacterBody2D
 	
 	public void _spawnHat()
 	{
+		if(!hasHat) return;
+
 		Hat hat = _HatScene.Instantiate<Hat>();
 		hat.Position = hatSpawnPoint.GlobalPosition;
-		if(sprite.FlipH) hat.direction = -1;
+		hat.target = this;
+		if(sprite.FlipH) hat.xdirection = -1;
 		Owner.AddChild(hat);
+		hasHat = false;
+	}
+	public void _on_hat_retriever_area_entered(Area2D area)
+	{
+		if(area.IsInGroup("Hat") && ((Hat)area).boomerang)
+		{
+			hasHat = true;
+			area.QueueFree();
+		}
 	}
 }
